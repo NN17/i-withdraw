@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/jquery.datetimepicker.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/jquery-confirm.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/i_withdraw.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/login.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/custom.css" />
 </head>
@@ -19,17 +20,17 @@
    <?php if($this->session->userdata('loginState')):?>
     <div class="ui fixed  menu">
         
-        <div class="ui container">
+        <div class="ui container fluid">
             <a href="ignite/dashboard" class="header item">
             <img src="assets/imgs/ignite-logo-circle.png" />
             &nbsp; &nbsp; IGNITE SOURCE &nbsp;
-            <small class="text-grey">Gasoline POS</small>
+            <small class="text-grey">i-Withdraw</small>
             </a>
             <a href="home" class="item <?php if($this->uri->segment(1) == 'home' || $this->uri->segment(1) == ''){echo 'active';}?>">
-                <i class="desktop icon"></i> HOME
+                <i class="desktop icon"></i> i-Exchange
             </a>
 
-            <a href="rate" class="item">
+            <a href="ignite/rates" class="item">
                 <i class="dollar sign icon"></i> RATE
             </a>
 

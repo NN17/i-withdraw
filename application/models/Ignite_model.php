@@ -187,7 +187,7 @@ class Ignite_model extends CI_Model {
     function max($table, $field){
         $this->db->select_max($field);
         $query = $this->db->get($table)->row_array();
-        return $query;
+        return $query[$field];
     }
 
     function emailCheck($email){
@@ -308,74 +308,6 @@ class Ignite_model extends CI_Model {
             }
     }
 
-    function get_dailyReports($start, $end){
-        // $this->db->where('createdDate >=', $start);
-        // $this->db->where('createdDate <=', $end);
-        $query = $this->db->query("SELECT * FROM receipts_tbl
-                LEFT JOIN tables_tbl
-                ON tables_tbl.tableId = receipts_tbl.relatedTable
-                WHERE createdDate BETWEEN '$start' AND '$end'
-                ");
-        return $query->result_array();
-    }
-
-    function get_monthlyReports($start, $end){
-        $query = $this->db->query("SELECT SUM(receipts_tbl.totalAmount) AS totalAmount, COUNT(receipts_tbl.receiptSerial) AS totalReceipt FROM receipts_tbl
-                LEFT JOIN tables_tbl
-                ON tables_tbl.tableId = receipts_tbl.relatedTable
-                WHERE createdDate BETWEEN '$start' AND '$end'
-                ");
-        return $query->row_array();
-    }
-
-    function get_yearlyReport($start, $end){
-        $query = $this->db->query("SELECT SUM(receipts_tbl.totalAmount) AS totalAmount, COUNT(receipts_tbl.receiptSerial) AS totalReceipt FROM receipts_tbl
-                LEFT JOIN tables_tbl
-                ON tables_tbl.tableId = receipts_tbl.relatedTable
-                WHERE createdDate BETWEEN '$start' AND '$end'
-                ");
-        return $query->row_array();
-    }
-
-    function get_orderHeader($tableId){
-        $query = $this->db->query("SELECT * FROM orders_tbl
-                LEFT JOIN tables_tbl
-                ON tables_tbl.tableId = orders_tbl.relatedTable
-                WHERE orders_tbl.relatedTable = $tableId
-                ");
-        return $query->row_array();
-    }
-
-    function get_dailyTotal($date){
-        $start = date('Y-m-d 00:00:00', $date[0]);
-        $end = date('Y-m-d 23:59:59', $date[0]);
-
-        $query = $this->db->query("SELECT SUM(totalAmount) AS total FROM receipts_tbl
-                WHERE createdDate BETWEEN '$start' AND '$end'
-                ")->row_array();
-        return $query['total'];
-    }
-
-    function get_monthlyTotal($month, $year){
-        $tDays=cal_days_in_month(CAL_GREGORIAN,$month,$year);
-
-        $start = $year.'-'.$month.'01';
-        $end = $year.'-'.$month.'-'.$tDays;
-        $query = $this->db->query("SELECT SUM(totalAmount) AS totalAmount FROM receipts_tbl
-                WHERE createdDate BETWEEN '$start' AND '$end'
-                ")->row_array();
-        return $query['totalAmount'];
-    }
-
-    function get_yearlyTotal($year){
-        $start = $year.'-01-01';
-        $end = $year.'-12-31';
-        $query = $this->db->query("SELECT SUM(totalAmount) AS totalAmount FROM receipts_tbl
-                WHERE createdDate BETWEEN '$start' AND '$end'
-                ")->row_array();
-        return $query['totalAmount'];
-    }
-
     function getMonth($month){
         switch($month){
             case 1:
@@ -415,6 +347,82 @@ class Ignite_model extends CI_Model {
                 return 'December';
                 break;
         }
+    }
+
+    // Custom Functions
+
+    function get_cashType(){
+        $query = $this->db->query("SELECT cashType FROM rates_tbl");
+        return $query->result();
+    }
+
+    function get_cashType_name($val){
+        switch($val){
+            case 'KP':
+                return 'K-Pay';
+                break;
+            case 'WP':
+                return 'Wave Pay';
+                break;
+            case 'CP':
+                return 'CB-Pay';
+                break;
+            case 'MP':
+                return 'Mytel Pay';
+                break;
+            case 'AP':
+                return 'AYA Pay';
+                break;
+            case 'OK':
+                return 'OK Dollar';
+                break;
+        }
+    }
+
+    // Return Wave Money Transfer Rate
+    function waveTransferRate($val){
+        if($val <= 10000){
+            return 400;
+        }
+            elseif ($val <= 25000) {
+                return 700;
+            }
+                elseif ($val <= 50000){
+                    return 1000;
+                }
+                    elseif ($val <= 100000){
+                        return 1500;
+                    }
+                        elseif ($val <= 150000){
+                            return 2000;
+                        }
+                            elseif ($val <= 200000){
+                                return 2500;
+                            }
+                                elseif ($val <= 300000){
+                                    return 3000;
+                                }
+                                    elseif ($val <= 400000){
+                                        return 4000;
+                                    }
+                                        elseif ($val <= 500000){
+                                            return 4500;
+                                        }
+                                            elseif ($val <= 600000){
+                                                return 5400;
+                                            }
+                                                elseif ($val <= 700000){
+                                                    return 6000;
+                                                }
+                                                    elseif ($val <= 800000){
+                                                        return 6700;
+                                                    }
+                                                        elseif ($val <= 900000){
+                                                            return 7400;
+                                                        }
+                                                            elseif ($val <= 1000000){
+                                                                return 8000;
+                                                            }
     }
 
     

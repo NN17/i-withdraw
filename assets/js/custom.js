@@ -1,15 +1,12 @@
 function base_url() {
-	return "http://" + location.hostname + "/codesemantic/";
+	return "http://" + location.hostname + "/i_withdraw/";
 }
-
-setInterval(() => {
-    isOnline();
-}, 5000);
 
 $(document).ready(function() {
 	$(".ui.dropdown").dropdown();
 	$(".menu .item").tab();
 	$(":input[type='number']:enabled:visible:first").focus();
+
 
 	/*
 	 * DateTime Picker
@@ -51,29 +48,33 @@ $(document).ready(function() {
 	});
 });
 
-function isOnline(no, yes) {
-	var xhr = XMLHttpRequest
-		? new XMLHttpRequest()
-		: new ActiveXObject("Microsoft.XMLHttp");
-	xhr.onload = function() {
-		if (yes instanceof Function) {
-			yes();
-		}
-	};
-	xhr.onerror = function() {
-		if (no instanceof Function) {
-			no();
-		}
-	};
-	xhr.open("GET", "anypage.php", true);
-	xhr.send();
+function urlRequest(url, type=""){
+	window.location.href = url + "/" + type;
 }
 
-isOnline(
-	function() {
-		alert("Sorry, we currently do not have Internet access.");
-	},
-	function() {
-		alert("Succesfully connected!");
+function receipt_modal(){
+	$('.receipt.modal')
+		.modal({'closable': false})
+	  	.modal('show')
+	;
+}
+
+function addDiscount(total, id, type){
+	var discount  = $('#discount').val();
+
+	if(discount == ''){
+		discount = 0;
 	}
-);
+
+	if(type == 'IN'){
+		var gTotal = parseInt(total) - parseInt(discount);
+	}
+		else{
+			var gTotal = parseInt(total) + parseInt(discount);
+		}
+
+	$('#gTotal').val(Intl.NumberFormat().format(gTotal));
+	$('#print').attr('onclick', "urlRequest('ignite/printReceipt/"+ type + "/" + id + "/" + parseInt(discount) +"')");
+}
+
+

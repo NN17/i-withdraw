@@ -1,3 +1,13 @@
+/*
+Default Preset
+*/
+
+.ui.main{
+	top: 50px;
+	position: relative;
+	padding: 20px 0px 20px 0px;
+}
+
 /* 
 * Margin
 */

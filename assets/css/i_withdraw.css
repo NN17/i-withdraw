@@ -1,0 +1,43 @@
+.ui.menu{
+	background: #333;
+}
+
+.menu a:link{
+	color:  #eee;
+}
+
+.menu a.item, .menu .dropdown.item{
+	color: #eee !important;
+}
+
+body{
+	background: #eee;
+}
+
+.menu i.icon{
+	color: #0ace97;
+}
+
+.home{
+	margin-top:  100px;
+}
+
+#discount, #gTotal{
+	border:  none;
+	text-align:  right;
+	width:  200px;
+	padding-right: 0px;
+	font-weight: bold;
+}
+
+.preview tr td{
+	height:  60px;
+}
+
+.modal .receipt-head{
+	text-align: center !important;
+}
+
+td.discount-input{
+	width:  40%;
+}
